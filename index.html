@@ -112,6 +112,37 @@ textarea {
   transform:scale(1.1);
   opacity:1;
 }
+
+.heart-container {
+  position:absolute;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  z-index:0;
+}
+
+.heart {
+  position:absolute;
+  bottom:-20px;
+  color:rgba(255, 77, 136, 0.85);
+  font-size:18px;
+  animation: floatHeart 6s linear forwards;
+  pointer-events:none;
+}
+
+@keyframes floatHeart {
+  0% {
+    transform: translateY(0) scale(0.8);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-120vh) scale(1.3);
+    opacity: 0;
+  }
+}  
 </style>
 </head>
 
@@ -215,14 +246,14 @@ textarea {
 
 <!-- FINAL -->
 <div class="screen fade" id="s15" style="background-image:url('Image2.jpeg')">
-  <h1>Happy Birthday ❤️</h1>
 
-  <!-- QUOTE -->
+  <!-- HEART BACKGROUND -->
+  <div class="heart-container"></div>
+
+  <h1>Happy Birthday Kannnnnnaaaaallllllluuuuuuuuuuuuuuuuu❤️</h1>
+
   <p id="quoteBox" class="quoteText"></p>
-
   <br>
-
-  <!-- MODE BUTTONS -->
   <div id="modeButtons">
     <button onclick="setQuote(1, this)">💖 Real</button>
     <button onclick="setQuote(2, this)">✨ Poetic</button>
@@ -236,6 +267,13 @@ textarea {
 <script>
 // TYPEWRITER
 let text = "Hey Chintu ❤️";
+let heartTimer = null;
+let audioCtx;
+let analyser;
+let dataArray;
+let source;
+let beatIntensity = 0;
+let audioInitialized = false;
 let i=0;
 function typeEffect(){
   if(i<text.length){
@@ -245,6 +283,42 @@ function typeEffect(){
   }
 }
 typeEffect();
+
+function initAudioAnalysis(){
+  if(audioInitialized) return;
+
+  const audio = document.getElementById("music");
+
+  audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  analyser = audioCtx.createAnalyser();
+
+  source = audioCtx.createMediaElementSource(audio);
+  source.connect(analyser);
+  analyser.connect(audioCtx.destination);
+
+  analyser.fftSize = 256;
+  dataArray = new Uint8Array(analyser.frequencyBinCount);
+
+  audioInitialized = true;
+
+  trackBeat();
+}
+
+function trackBeat(){
+  requestAnimationFrame(trackBeat);
+
+  if(!analyser) return;
+
+  analyser.getByteFrequencyData(dataArray);
+
+  let sum = 0;
+  for(let i = 0; i < dataArray.length; i++){
+    sum += dataArray[i];
+  }
+
+  beatIntensity = sum / dataArray.length; // 0 - 255
+}
+
 
 // FLOAT HEARTS
 document.addEventListener("click", e=>{
@@ -272,11 +346,6 @@ function start(){
   next(2);
 }
 
-function next(n){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('s'+n).classList.add('active');
-}
-
 function nextScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -300,15 +369,29 @@ function moveNo(){
   btn.style.left=Math.random()*300+"px";
   btn.style.top=Math.random()*400+"px";
 }
-
+  
 function yesClick(){
   alert("I knew it ❤️");
 
   next(15);
+
   fadeOutMusic();
+
   setTimeout(() => {
-    initFinalScreen();   // 👈 THIS is the key
+    initAudioAnalysis();   // 👈 IMPORTANT
+    initFinalScreen();
+    startHearts();
   }, 400);
+}
+
+function next(n){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+
+  // stop hearts when not on final screen
+  if(n !== 15){
+    stopHearts();
+  }
 }
 
 const quotes = {
@@ -402,6 +485,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }, 500);
 });
+
+function createHeart(){
+  const container = document.querySelector(".heart-container");
+  if(!container) return;
+
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "❤️";
+
+  // 🎵 beat response (cinematic feel)
+  let intensity = beatIntensity;
+
+  let scale = 0.8 + (intensity / 200);
+  let speed = Math.max(2.5, 6 - (intensity / 60));
+  let opacity = 0.4 + (intensity / 400);
+
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.fontSize = (14 + intensity / 20) + "px";
+  heart.style.animationDuration = speed + "s";
+  heart.style.opacity = opacity;
+  heart.style.transform = `scale(${scale})`;
+
+  container.appendChild(heart);
+
+  setTimeout(() => heart.remove(), 7000);
+}
+
+function startHearts(){
+  stopHearts();
+
+  initAudioAnalysis(); // 👈 NEW ADDITION (safe to call multiple times)
+
+  heartTimer = setInterval(createHeart, 220);
+}
+
+  function stopHearts(){
+  if(heartTimer){
+    clearInterval(heartTimer);
+    heartTimer = null;
+  }
+}
+
+
+  
 </script>
 
 </body>
