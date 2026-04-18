@@ -398,8 +398,9 @@ function changeSong(){
   music.src = selected;
   music.load();
 
-  // must be triggered by user click (dropdown change is OK)
-  music.play().catch(err => {
+  music.play().then(() => {
+    music.currentTime = 20; // 🔥 skip intro
+  }).catch(err => {
     console.log("Play blocked:", err);
   });
 }
@@ -464,10 +465,26 @@ function start(){
   music.volume = 0;
 
   music.play().then(() => {
+
+    // 🔥 skip intro silence
+    music.currentTime = 15;
+
     initAudioAnalysis();
+
   }).catch(err => {
-    console.log("Autoplay blocked:", err);
+    console.log("Play blocked:", err);
   });
+
+  let vol = 0;
+  let fade = setInterval(() => {
+    if (vol < 1) {
+      vol += 0.05;
+      music.volume = vol;
+    } else clearInterval(fade);
+  }, 200);
+
+  next(2);
+}
 
   let vol = 0;
   let fade = setInterval(() => {
