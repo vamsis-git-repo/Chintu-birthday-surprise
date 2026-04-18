@@ -24,10 +24,10 @@ p, h1, h2, h3 {
   text-shadow: none;
   margin: 10px auto;
 }
-.s1 {
+#s1 {
   p, h1, h2, h3 {
-    background : none;
-    backdrop-filter: none;
+    background: none !important;
+    backdrop-filter: none !important;
   }
 }
 html, body {
@@ -287,86 +287,86 @@ textarea {
 </div>
 
 <!-- STORY -->
-<div class="screen fade" id="s3" style="background-image:url('Image1.jpeg')">
+<div class="screen fade" id="s3" style="background-image:url('Image8.jpeg')">
   <p class="typewriterText">7–10 days… and we became inseparable ❤️</p>
   <button onclick="next(4)">Next</button>
 </div>
 
-<div class="screen fade" id="s4" style="background-image:url('Image1.jpeg')">
+<div class="screen fade" id="s4" style="background-image:url('Image6.jpeg')">
   <p>We became each other’s safe place ❤️</p>
   <button onclick="next(5)">Next</button>
 </div>
 
-<div class="screen fade" id="s5" style="background-image:url('Image2.jpeg')">
+<div class="screen fade" id="s5" style="background-image:url('Image4.jpeg')">
   <p>We understood each other without words 🥺</p>
   <button onclick="next(6)">Next</button>
 </div>
 
-<div class="screen fade" id="s6" style="background-image:url('Image1.jpeg')">
+<div class="screen fade" id="s6" style="background-image:url('Image4.jpeg')">
   <p>December 2024… I feared losing you 💔</p>
   <button onclick="next(7)">Next</button>
 </div>
 
-<div class="screen fade" id="s7" style="background-image:url('Image2.jpeg')">
+<div class="screen fade" id="s7" style="background-image:url('Image8.jpeg')">
   <p>Feb 8th, 2025 – You said YES 💖</p>
   <button onclick="next(8)">Next</button>
 </div>
 
-<div class="screen fade" id="s8" style="background-image:url('Image1.jpeg')">
+<div class="screen fade" id="s8" style="background-image:url('Image4.jpeg')">
   <p>You loved me before I knew ❤️</p>
   <button onclick="next(9)">Next</button>
 </div>
 
-<div class="screen fade" id="s9" style="background-image:url('Image2.jpeg')">
+<div class="screen fade" id="s9" style="background-image:url('Image7.jpeg')">
   <p>From distance… to together forever ❤️</p>
   <button onclick="next(10)">Next</button>
 </div>
 
 <!-- LOVE QUESTION -->
-<div class="screen fade" id="s10" style="background-image:url('Image1.jpeg')">
+<div class="screen fade" id="s10" style="background-image:url('Image2.jpeg')">
   <h2>Who loves more? 😜</h2>
   <button onclick="nextScreen('s11_vamsi')">Vamsi</button>
   <button onclick="nextScreen('s11_chintu')">Chintu</button>
 </div>
 
-<div class="screen fade" id="s11_vamsi" style="background-image:url('Image2.jpeg')">
+<div class="screen fade" id="s11_vamsi" style="background-image:url('Image8.jpeg')">
   <p>Are you sure? 😜</p>
   <button onclick="nextScreen('s12')">Next</button>
 </div>
 
-<div class="screen fade" id="s11_chintu" style="background-image:url('Image1.jpeg')">
+<div class="screen fade" id="s11_chintu" style="background-image:url('Image7.jpeg')">
   <p>Of course ❤️</p>
   <button onclick="nextScreen('s12')">Next</button>
 </div>
 
 <!-- INPUT -->
-<div class="screen fade" id="s12" style="background-image:url('Image2.jpeg')">
+<div class="screen fade" id="s12" style="background-image:url('Image3.jpeg')">
   <h2>Tell me about me ❤️</h2>
   <textarea id="ans1"></textarea><br>
   <button onclick="saveAndNext('ans1',13)">Next</button>
 </div>
 
-<div class="screen fade" id="s13" style="background-image:url('Image1.jpeg')">
+<div class="screen fade" id="s13" style="background-image:url('Image5.jpeg')">
   <h2>Our Story 💖</h2>
   <textarea id="ans2"></textarea><br>
   <button onclick="saveAndNext('ans2',14)">Next</button>
 </div>
 
-<div class="screen fade" id="s14" style="background-image:url('Image2.jpeg')">
+<div class="screen fade" id="s14" style="background-image:url('Image3.jpeg')">
   <h2>What changed in your life? ✨</h2>
   <textarea id="ans3"></textarea><br>
   <button onclick="nextScreen('sProposal')">Next</button>
 </div>
 
 <!-- PROPOSAL -->
-<div class="screen fade" id="sProposal" style="background-image:url('Image1.jpeg')">
+<div class="screen fade" id="sProposal" style="background-image:url('Image7.jpeg')">
   <h2>Will you marry me? 💖</h2>
   <button id="yesBtn" onclick="yesClick()">Yes ❤️</button>
   <button id="noBtn" onmouseover="moveNo(); growYes()">No 😜</button>
 </div>
 
 <!-- FINAL -->
-<div class="screen fade" id="s15" style="background-image:url('Image2.jpeg')">
+<div class="screen fade" id="s15" style="background-image:url('Image5.jpeg')">
 
   <!-- HEART BACKGROUND -->
   <div class="heart-container"></div>
