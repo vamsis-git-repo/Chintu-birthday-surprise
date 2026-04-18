@@ -347,7 +347,7 @@ textarea {
 <div class="screen fade" id="sProposal" style="background-image:url('Image1.jpeg')">
   <h2>Will you marry me? 💖</h2>
   <button id="yesBtn" onclick="yesClick()">Yes ❤️</button>
-  <button id="noBtn" onmouseover="moveNo()">No 😜</button>
+  <button id="noBtn" onmouseover="moveNo(); growYes()">No 😜</button>
 </div>
 
 <!-- FINAL -->
@@ -738,6 +738,19 @@ function updateTimeline(n){
       dot.classList.add("active");
     }
   }
+}
+
+function growYes(){
+  let yesBtn = document.getElementById("yesBtn");
+
+  let current = parseFloat(yesBtn.dataset.scale || 1);
+  current += 0.12;
+
+  yesBtn.dataset.scale = current;
+
+  yesBtn.style.transform = `scale(${current})`;
+  yesBtn.style.boxShadow = "0 0 20px #ff4d88";
+  yesBtn.style.transition = "0.2s ease";
 }
   
 
