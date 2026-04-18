@@ -12,16 +12,32 @@ body {
   margin:0;
   font-family:'Poppins', sans-serif;
   text-align:center;
-  color:black;
+  color:white;
   overflow:hidden;
 }
 
+/* SCREEN */
 .screen {
   display:none;
   height:100vh;
   padding:40px 20px;
   background-size:cover;
   background-position:center;
+  position:relative;
+  animation: zoomBg 20s ease-in-out infinite alternate;
+}
+
+.screen::before {
+  content:"";
+  position:absolute;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.45);
+}
+
+.screen * {
+  position:relative;
+  z-index:1;
 }
 
 .active { display:block; }
@@ -39,10 +55,8 @@ button {
   border-radius:30px;
   background:#ff4d88;
   color:white;
-  font-size:16px;
   margin:10px;
   cursor:pointer;
-  transition:0.2s;
 }
 
 textarea {
@@ -52,30 +66,44 @@ textarea {
   padding:10px;
 }
 
-.fade { animation: fade 1s; }
-
-@keyframes fade {
-  from {opacity:0}
-  to {opacity:1}
+/* ANIMATIONS */
+@keyframes zoomBg {
+  from { background-size:100%; }
+  to { background-size:115%; }
 }
 
-#confetti {
+.fade { animation: fade 1s; }
+@keyframes fade { from {opacity:0} to {opacity:1} }
+
+/* FLOATING HEARTS */
+.heart {
   position:fixed;
-  top:0;
-  left:0;
-  pointer-events:none;
+  color:#ff4d88;
+  font-size:20px;
+  animation: floatUp 2s linear forwards;
+}
+
+@keyframes floatUp {
+  from { transform:translateY(0); opacity:1; }
+  to { transform:translateY(-100px); opacity:0; }
+}
+
+/* TYPEWRITER */
+.typewriter {
+  border-right:2px solid white;
+  white-space:nowrap;
+  overflow:hidden;
 }
 </style>
 </head>
 
 <body>
 
-<!-- MUSIC -->
 <audio id="music" src="music.mp3" loop></audio>
 
-<!-- SCREEN 1 -->
+<!-- START -->
 <div class="screen active fade" id="s1" style="background-image:url('Image1.jpeg')">
-  <h1>Hey Chintu ❤️</h1>
+  <h1 class="typewriter" id="titleText"></h1>
   <p>This is OUR story…</p>
   <button onclick="start()">Start</button>
 </div>
@@ -88,12 +116,12 @@ textarea {
   <button onclick="pastLife()">Some time in past life 😜</button>
 </div>
 
+<!-- STORY -->
 <div class="screen fade" id="s3" style="background-image:url('Image1.jpeg')">
-  <p>7–10 days… and we became inseparable ❤️</p>
+  <p class="typewriterText">7–10 days… and we became inseparable ❤️</p>
   <button onclick="next(4)">Next</button>
 </div>
 
-<!-- STORY -->
 <div class="screen fade" id="s4" style="background-image:url('Image1.jpeg')">
   <p>We became each other’s safe place ❤️</p>
   <button onclick="next(5)">Next</button>
@@ -124,88 +152,112 @@ textarea {
   <button onclick="next(10)">Next</button>
 </div>
 
-<!-- FUN -->
-<div class="screen fade" id="s10">
+<!-- LOVE QUESTION -->
+<div class="screen fade" id="s10" style="background-image:url('Image1.jpeg')">
   <h2>Who loves more? 😜</h2>
-  <button onclick="next(11)">Vamsi</button>
-  <button onclick="next(11)">Chintu</button>
+  <button onclick="nextScreen('s11_vamsi')">Vamsi</button>
+  <button onclick="nextScreen('s11_chintu')">Chintu</button>
 </div>
 
-<div class="screen fade" id="s11">
-  <p>Chintu wins always ❤️</p>
-  <button onclick="next(12)">Next</button>
+<div class="screen fade" id="s11_vamsi" style="background-image:url('Image2.jpeg')">
+  <p>Are you sure? 😜</p>
+  <button onclick="nextScreen('s12')">Next</button>
+</div>
+
+<div class="screen fade" id="s11_chintu" style="background-image:url('Image1.jpeg')">
+  <p>Of course ❤️</p>
+  <button onclick="nextScreen('s12')">Next</button>
 </div>
 
 <!-- INPUT -->
-<div class="screen fade" id="s12">
+<div class="screen fade" id="s12" style="background-image:url('Image2.jpeg')">
   <h2>Tell me about me ❤️</h2>
   <textarea id="ans1"></textarea><br>
   <button onclick="saveAndNext('ans1',13)">Next</button>
 </div>
 
-<div class="screen fade" id="s13">
+<div class="screen fade" id="s13" style="background-image:url('Image1.jpeg')">
   <h2>Our Story 💖</h2>
   <textarea id="ans2"></textarea><br>
   <button onclick="saveAndNext('ans2',14)">Next</button>
 </div>
 
-<div class="screen fade" id="s14">
+<div class="screen fade" id="s14" style="background-image:url('Image2.jpeg')">
   <h2>What changed in your life? ✨</h2>
   <textarea id="ans3"></textarea><br>
   <button onclick="goToProposal()">Next</button>
 </div>
 
 <!-- PROPOSAL -->
-<div class="screen fade" id="sProposal">
-  <h2>One Important Question 💖</h2>
-  <p>Will you marry me? 😄</p>
-
+<div class="screen fade" id="sProposal" style="background-image:url('Image1.jpeg')">
+  <h2>Will you marry me? 💖</h2>
   <button id="yesBtn" onclick="yesClick()">Yes ❤️</button>
   <button id="noBtn" onmouseover="moveNo()">No 😜</button>
 </div>
 
 <!-- FINAL -->
-<div class="screen fade" id="s15">
-  <h1>Happy Birthday My Love 🎂</h1>
-
+<div class="screen fade" id="s15" style="background-image:url('Image2.jpeg')">
+  <h1>Happy Birthday ❤️</h1>
   <p>
-    You are my home ❤️  
-    <br><br>
-    No matter how life changes…  
-    I will always be with you 💖  
-    <br><br>
-    This page may end here…  
-    But us? Never ❤️  
-  </p>
-
-  <br><br>
-
-  <p style="font-style: italic; font-size:16px; opacity:0; animation: fadeIn 3s forwards; animation-delay:2s;">
-    “The way we met. The path we've walked until now — both have taught us many things.  
-    The path ahead will be difficult. But let's face it together. With a smile.”
+    The way we met… the path we've walked…  
+    let's face everything together with a smile 💖
   </p>
 </div>
 
-<canvas id="confetti"></canvas>
-
 <script>
+// TYPEWRITER
+let text = "Hey Chintu ❤️";
+let i=0;
+function typeEffect(){
+  if(i<text.length){
+    document.getElementById("titleText").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typeEffect,80);
+  }
+}
+typeEffect();
+
+// FLOAT HEARTS
+document.addEventListener("click", e=>{
+  let heart=document.createElement("div");
+  heart.className="heart";
+  heart.innerHTML="❤️";
+  heart.style.left=e.clientX+"px";
+  heart.style.top=e.clientY+"px";
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),2000);
+});
+
+// MUSIC FADE
+function start(){
+  let music=document.getElementById("music");
+  music.volume=0;
+  music.play();
+  let vol=0;
+  let fade=setInterval(()=>{
+    if(vol<1){
+      vol+=0.05;
+      music.volume=vol;
+    } else clearInterval(fade);
+  },200);
+  next(2);
+}
+
 function next(n){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('s'+n).classList.add('active');
 }
 
-function goToProposal(){
+function nextScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('sProposal').classList.add('active');
+  document.getElementById(id).classList.add('active');
 }
 
-function start(){
-  document.getElementById("music").play();
-  next(2);
-}
+function wrong(){ alert("Try again 😜"); }
 
-function wrong(){
-  alert("Ayyyo! Try again 😜");
+function pastLife(){
+  alert("Oh no… same feeling 😜❤️");
+  next(3);
 }
 
 function saveAndNext(id,n){
@@ -214,51 +266,15 @@ function saveAndNext(id,n){
 }
 
 function moveNo(){
-  const btn=document.getElementById("noBtn");
+  let btn=document.getElementById("noBtn");
   btn.style.position="absolute";
-  btn.style.left=Math.random()*(window.innerWidth-100)+"px";
-  btn.style.top=Math.random()*(window.innerHeight-50)+"px";
-
-  let yes=document.getElementById("yesBtn");
-  let size=parseInt(window.getComputedStyle(yes).fontSize);
-  yes.style.fontSize=(size+2)+"px";
+  btn.style.left=Math.random()*300+"px";
+  btn.style.top=Math.random()*400+"px";
 }
 
 function yesClick(){
-  startConfetti();
-  alert("I knew it 😍❤️");
-  setTimeout(()=>next(15),1000);
-}
-
-function startConfetti(){
-  const canvas=document.getElementById("confetti");
-  const ctx=canvas.getContext("2d");
-  canvas.width=window.innerWidth;
-  canvas.height=window.innerHeight;
-
-  let pieces=Array.from({length:100},()=>({
-    x:Math.random()*canvas.width,
-    y:Math.random()*canvas.height,
-    r:Math.random()*6+2
-  }));
-
-  setInterval(()=>{
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    pieces.forEach(p=>{
-      ctx.beginPath();
-      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      ctx.fillStyle="pink";
-      ctx.fill();
-      p.y+=2;
-      if(p.y>canvas.height) p.y=0;
-    });
-  },30);
-}
-function pastLife() {
-  alert("Oh no… both of us are feeling the same 😜❤️");
-  setTimeout(() => {
-    next(3);
-  }, 300);
+  alert("I knew it ❤️");
+  next(15);
 }
 </script>
 
