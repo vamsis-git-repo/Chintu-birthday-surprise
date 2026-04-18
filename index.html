@@ -255,6 +255,7 @@ textarea {
   <p>This is OUR story…</p>
   <h3>Select a song 🎧</h3>
   <select id="songSelect" onchange="changeSong()">
+    <option value="">Cutie pleaase select a song here 💖</option>
     <option value="Song1.mpeg">Soft Love 💖</option>
     <option value="Song2.mpeg">Romantic 🌹</option>
     <option value="Song3.mpeg">Memories 🥺</option>
@@ -393,8 +394,14 @@ function changeSong(){
   const music = document.getElementById("music");
   const selected = document.getElementById("songSelect").value;
 
+  music.pause();
   music.src = selected;
-  music.play();
+  music.load();
+
+  // must be triggered by user click (dropdown change is OK)
+  music.play().catch(err => {
+    console.log("Play blocked:", err);
+  });
 }
   
 function initAudioAnalysis(){
@@ -446,23 +453,29 @@ document.addEventListener("click", e=>{
 
 // MUSIC FADE
 function start(){
-  let music=document.getElementById("music");
 
-  music.src = document.getElementById("songSelect").value;
+  const music = document.getElementById("music");
 
-  music.volume=0;
+  const selected = document.getElementById("songSelect").value;
+
+  music.src = selected;
+  music.load();
+
+  music.volume = 0;
 
   music.play().then(() => {
     initAudioAnalysis();
+  }).catch(err => {
+    console.log("Autoplay blocked:", err);
   });
 
-  let vol=0;
-  let fade=setInterval(()=>{
-    if(vol<1){
-      vol+=0.05;
-      music.volume=vol;
+  let vol = 0;
+  let fade = setInterval(() => {
+    if (vol < 1) {
+      vol += 0.05;
+      music.volume = vol;
     } else clearInterval(fade);
-  },200);
+  }, 200);
 
   next(2);
 }
