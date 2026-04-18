@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Chintu ❤️</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap" rel="stylesheet">
+
+<style>
+body {
+  margin:0;
+  font-family:'Poppins', sans-serif;
+  text-align:center;
+  color:black;
+  overflow:hidden;
+}
+
+.screen {
+  display:none;
+  height:100vh;
+  padding:40px 20px;
+  background-size:cover;
+  background-position:center;
+}
+
+.active { display:block; }
+
+h1,h2 { font-family:'Pacifico', cursive; }
+
+p {
+  font-size:18px;
+  text-shadow:0 0 10px rgba(0,0,0,0.8);
+}
+
+button {
+  padding:12px 25px;
+  border:none;
+  border-radius:30px;
+  background:#ff4d88;
+  color:white;
+  font-size:16px;
+  margin:10px;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+textarea {
+  width:85%;
+  max-width:400px;
+  border-radius:10px;
+  padding:10px;
+}
+
+.fade { animation: fade 1s; }
+
+@keyframes fade {
+  from {opacity:0}
+  to {opacity:1}
+}
+
+#confetti {
+  position:fixed;
+  top:0;
+  left:0;
+  pointer-events:none;
+}
+</style>
+</head>
+
+<body>
+
+<!-- MUSIC -->
+<audio id="music" src="music.mp3" loop></audio>
+
+<!-- SCREEN 1 -->
+<div class="screen active fade" id="s1" style="background-image:url('Image1.jpg')">
+  <h1>Hey Chintu ❤️</h1>
+  <p>This is OUR story…</p>
+  <button onclick="start()">Start</button>
+</div>
+
+<!-- QUIZ -->
+<div class="screen fade" id="s2" style="background-image:url('Image2.jpg')">
+  <h2>When did we become friends? 😄</h2>
+  <button onclick="next(3)">June 2023</button>
+  <button onclick="wrong()">Yesterday 😜</button>
+</div>
+
+<div class="screen fade" id="s3" style="background-image:url('Image1.jpg')">
+  <p>7–10 days… and we became inseparable ❤️</p>
+  <button onclick="next(4)">Next</button>
+</div>
+
+<!-- STORY -->
+<div class="screen fade" id="s4" style="background-image:url('Image1.jpg')">
+  <p>We became each other’s safe place ❤️</p>
+  <button onclick="next(5)">Next</button>
+</div>
+
+<div class="screen fade" id="s5" style="background-image:url('Image2.jpg')">
+  <p>We understood each other without words 🥺</p>
+  <button onclick="next(6)">Next</button>
+</div>
+
+<div class="screen fade" id="s6" style="background-image:url('Image1.jpg')">
+  <p>December 2024… I feared losing you 💔</p>
+  <button onclick="next(7)">Next</button>
+</div>
+
+<div class="screen fade" id="s7" style="background-image:url('Image2.jpg')">
+  <p>Feb 8th, 2025 – You said YES 💖</p>
+  <button onclick="next(8)">Next</button>
+</div>
+
+<div class="screen fade" id="s8" style="background-image:url('Image1.jpg')">
+  <p>You loved me before I knew ❤️</p>
+  <button onclick="next(9)">Next</button>
+</div>
+
+<div class="screen fade" id="s9" style="background-image:url('Image2.jpg')">
+  <p>From distance… to together forever ❤️</p>
+  <button onclick="next(10)">Next</button>
+</div>
+
+<!-- FUN -->
+<div class="screen fade" id="s10">
+  <h2>Who loves more? 😜</h2>
+  <button onclick="next(11)">Vamsi</button>
+  <button onclick="next(11)">Chintu</button>
+</div>
+
+<div class="screen fade" id="s11">
+  <p>Chintu wins always ❤️</p>
+  <button onclick="next(12)">Next</button>
+</div>
+
+<!-- INPUT -->
+<div class="screen fade" id="s12">
+  <h2>Tell me about me ❤️</h2>
+  <textarea id="ans1"></textarea><br>
+  <button onclick="saveAndNext('ans1',13)">Next</button>
+</div>
+
+<div class="screen fade" id="s13">
+  <h2>Our Story 💖</h2>
+  <textarea id="ans2"></textarea><br>
+  <button onclick="saveAndNext('ans2',14)">Next</button>
+</div>
+
+<div class="screen fade" id="s14">
+  <h2>What changed in your life? ✨</h2>
+  <textarea id="ans3"></textarea><br>
+  <button onclick="goToProposal()">Next</button>
+</div>
+
+<!-- PROPOSAL -->
+<div class="screen fade" id="sProposal">
+  <h2>One Important Question 💖</h2>
+  <p>Will you marry me? 😄</p>
+
+  <button id="yesBtn" onclick="yesClick()">Yes ❤️</button>
+  <button id="noBtn" onmouseover="moveNo()">No 😜</button>
+</div>
+
+<!-- FINAL -->
+<div class="screen fade" id="s15">
+  <h1>Happy Birthday My Love 🎂</h1>
+
+  <p>
+    You are my home ❤️  
+    <br><br>
+    No matter how life changes…  
+    I will always be with you 💖  
+    <br><br>
+    This page may end here…  
+    But us? Never ❤️  
+  </p>
+
+  <br><br>
+
+  <p style="font-style: italic; font-size:16px; opacity:0; animation: fadeIn 3s forwards; animation-delay:2s;">
+    “The way we met. The path we've walked until now — both have taught us many things.  
+    The path ahead will be difficult. But let's face it together. With a smile.”
+  </p>
+</div>
+
+<canvas id="confetti"></canvas>
+
+<script>
+function next(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('s'+n).classList.add('active');
+}
+
+function goToProposal(){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('sProposal').classList.add('active');
+}
+
+function start(){
+  document.getElementById("music").play();
+  next(2);
+}
+
+function wrong(){
+  alert("Ayyyo! Try again 😜");
+}
+
+function saveAndNext(id,n){
+  localStorage.setItem(id, document.getElementById(id).value);
+  next(n);
+}
+
+function moveNo(){
+  const btn=document.getElementById("noBtn");
+  btn.style.position="absolute";
+  btn.style.left=Math.random()*(window.innerWidth-100)+"px";
+  btn.style.top=Math.random()*(window.innerHeight-50)+"px";
+
+  let yes=document.getElementById("yesBtn");
+  let size=parseInt(window.getComputedStyle(yes).fontSize);
+  yes.style.fontSize=(size+2)+"px";
+}
+
+function yesClick(){
+  startConfetti();
+  alert("I knew it 😍❤️");
+  setTimeout(()=>next(15),1000);
+}
+
+function startConfetti(){
+  const canvas=document.getElementById("confetti");
+  const ctx=canvas.getContext("2d");
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+
+  let pieces=Array.from({length:100},()=>({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*6+2
+  }));
+
+  setInterval(()=>{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle="pink";
+      ctx.fill();
+      p.y+=2;
+      if(p.y>canvas.height) p.y=0;
+    });
+  },30);
+}
+</script>
+
+</body>
+</html>
