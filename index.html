@@ -94,6 +94,24 @@ textarea {
   white-space:nowrap;
   overflow:hidden;
 }
+
+.quoteText {
+  font-size:18px;
+  line-height:1.6;
+  min-height:180px;
+  margin-top:20px;
+}
+
+#modeButtons button {
+  opacity:0.7;
+  transition:0.2s;
+}
+
+#modeButtons button.activeMode {
+  background:#ff1f6b;
+  transform:scale(1.1);
+  opacity:1;
+}
 </style>
 </head>
 
@@ -204,6 +222,25 @@ textarea {
   </p>
 </div>
 
+<div class="screen fade" id="s15" style="background-image:url('Image2.jpeg')">
+  <h1>Happy Birthday ❤️</h1>
+
+  <!-- QUOTE -->
+  <p id="quoteBox" class="quoteText"></p>
+
+  <br>
+
+  <!-- MODE BUTTONS -->
+  <div id="modeButtons">
+    <button onclick="setQuote(1, this)">💖 Real</button>
+    <button onclick="setQuote(2, this)">✨ Poetic</button>
+    <button onclick="setQuote(3, this)">❤️ Personal</button>
+    <button onclick="setQuote(4, this)">🎬 Short</button>
+  </div>
+</div>
+
+
+
 <script>
 // TYPEWRITER
 let text = "Hey Chintu ❤️";
@@ -274,8 +311,105 @@ function moveNo(){
 
 function yesClick(){
   alert("I knew it ❤️");
+
   next(15);
+  fadeOutMusic();
+  setTimeout(() => {
+    initFinalScreen();   // 👈 THIS is the key
+  }, 400);
 }
+
+const quotes = {
+  1: `The way we met…
+
+The path we've walked until now…
+
+They’ve taught us more than we ever expected.
+
+The road ahead may not always be easy,
+but if it’s with you…
+
+I know we’ll face everything with a smile ❤️`,
+
+  2: `From the way we met…
+to every step we've taken together…
+
+We’ve grown, we’ve learned, we’ve become us.
+
+The path ahead may test us,
+but hand in hand,
+we’ll walk through it all… with a smile 💖`,
+
+  3: `The way we met…
+and everything we've been through together…
+
+It changed me, it shaped me, it gave me you.
+
+No matter how difficult the path ahead gets,
+let’s face it together…
+just like we always do — with a smile ❤️`,
+
+  4: `The way we met…
+
+The journey we've shared…
+
+Whatever comes next,
+we’ll face it together… with a smile 💖`
+};
+
+let typingInterval;
+
+// TYPEWRITER FUNCTION
+function typeQuote(text){
+  const box = document.getElementById("quoteBox");
+  box.innerHTML = "";
+
+  let i = 0;
+
+  clearInterval(typingInterval);
+
+  typingInterval = setInterval(() => {
+    if(i < text.length){
+      if(text.charAt(i) === "\n"){
+        box.innerHTML += "<br>";
+      } else {
+        box.innerHTML += text.charAt(i);
+      }
+      i++;
+    } else {
+      clearInterval(typingInterval);
+    }
+  }, 25);
+}
+
+// MAIN SET FUNCTION
+function setQuote(mode, btn){
+  const box = document.getElementById("quoteBox");
+
+  // highlight active button
+  document.querySelectorAll('#modeButtons button')
+    .forEach(b => b.classList.remove('activeMode'));
+
+  if(btn) btn.classList.add('activeMode');
+
+  typeQuote(quotes[mode]);
+}
+
+// INIT FINAL SCREEN (IMPORTANT)
+function initFinalScreen(){
+  const firstBtn = document.querySelector('#modeButtons button');
+  setQuote(1, firstBtn);
+}
+
+// SAFE AUTO LOAD (if already on screen)
+document.addEventListener("DOMContentLoaded", () => {
+  setTimeout(() => {
+    const final = document.getElementById("s15");
+    if(final && final.classList.contains("active")){
+      initFinalScreen();
+    }
+  }, 500);
+});
 </script>
 
 </body>
