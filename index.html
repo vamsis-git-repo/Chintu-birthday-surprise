@@ -259,7 +259,7 @@ textarea {
     <option value="Song1.mpeg">Soft Love 💖</option>
     <option value="Song2.mpeg">Romantic 🌹</option>
     <option value="Song3.mpeg">Memories 🥺</option>
-  </select>
+  </select><br>
   <button onclick="start()">Start</button>
 </div>
 
@@ -356,8 +356,8 @@ textarea {
   <!-- HEART BACKGROUND -->
   <div class="heart-container"></div>
 
-  <h1>Happy Birthday Kannnnnnaaaaallllllluuuuuuuuuuuuuuuuu❤️</h1>
-
+  <h1>Happy Birthday Kannnnnnaaaaallllllluuuuuuuuuuuuuuuuu❤️</h1><br>
+  <h1>I love you soooooo much pottttodddddaaaaa 💘♾️❣️🥰🫂💓</h1>
   <p id="quoteBox" class="quoteText"></p>
   <br>
   <div id="modeButtons">
@@ -366,6 +366,7 @@ textarea {
     <button onclick="setQuote(3, this)">❤️ Personal</button>
     <button onclick="setQuote(4, this)">🎬 Short</button>
   </div>
+  
 </div>
 
 
@@ -457,23 +458,37 @@ function start(){
 
   const music = document.getElementById("music");
 
+  // only set src IF not already set
   const selected = document.getElementById("songSelect").value;
 
-  music.src = selected;
-  music.load();
+  if(!music.src || !music.src.includes(selected)){
+    music.src = selected;
+    music.load();
+  }
 
-  music.volume = 0;
-
-  music.play().then(() => {
-
-    // 🔥 skip intro silence
-    music.currentTime = 15;
-
-    initAudioAnalysis();
-
-  }).catch(err => {
+  // resume instead of restart
+  music.play().catch(err => {
     console.log("Play blocked:", err);
   });
+
+  // optional skip silence only FIRST time
+  if(!music._started){
+    music.currentTime = 15;
+    music._started = true;
+  }
+
+  let vol = 0;
+  music.volume = 0;
+
+  let fade = setInterval(() => {
+    if (vol < 1) {
+      vol += 0.05;
+      music.volume = vol;
+    } else clearInterval(fade);
+  }, 200);
+
+  next(2);
+}
 
   let vol = 0;
   let fade = setInterval(() => {
