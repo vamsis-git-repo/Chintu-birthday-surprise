@@ -344,8 +344,13 @@ document.addEventListener("click", e=>{
 // MUSIC FADE
 function start(){
   let music=document.getElementById("music");
+
   music.volume=0;
-  music.play();
+
+  music.play().then(() => {
+    initAudioAnalysis(); // ⭐ must start AFTER play
+  });
+
   let vol=0;
   let fade=setInterval(()=>{
     if(vol<1){
@@ -353,8 +358,10 @@ function start(){
       music.volume=vol;
     } else clearInterval(fade);
   },200);
+
   next(2);
 }
+  
 
 function nextScreen(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -402,13 +409,14 @@ function next(n){
     stopHearts();
   }
 
-  // ⭐ IMPORTANT: auto-start hearts when entering final screen
   if(n === 15){
-    startHearts();
+    setTimeout(() => {
+      initAudioAnalysis();
+      initFinalScreen();
+      startHearts(); // ONLY HERE
+    }, 300);
   }
 }
-
-setInterval(createHeart, 200);
 
 const quotes = {
   1: `The way we met…
@@ -546,6 +554,12 @@ function startHearts(){
   }
 }
 
+
+document.addEventListener("click", () => {
+  if(audioCtx && audioCtx.state === "suspended"){
+    audioCtx.resume();
+  }
+});
 
   
 </script>
