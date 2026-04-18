@@ -389,20 +389,11 @@ function moveNo(){
   
 function yesClick(){
   alert("I knew it ❤️");
-
   next(15);
-
-  fadeOutMusic();
-
-  setTimeout(() => {
-    initAudioAnalysis();   // 👈 IMPORTANT
-    initFinalScreen();
-    startHearts();
-  }, 400);
 }
 
 function next(n){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('s'+n).classList.add('active');
 
   if(n !== 15){
@@ -413,11 +404,11 @@ function next(n){
     setTimeout(() => {
       initAudioAnalysis();
       initFinalScreen();
-      startHearts(); // ONLY HERE
+      startHearts();
     }, 300);
   }
 }
-
+  
 const quotes = {
   1: `The way we met…
 
