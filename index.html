@@ -44,6 +44,20 @@ body {
   z-index:3;
 }
 
+.screen {
+  opacity: 1;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transform: scale(1.02);
+  pointer-events: none;
+}
+
+.screen.active {
+  display: block;
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
 .active { display:block; }
 
 h1,h2 { font-family:'Pacifico', cursive; }
@@ -441,25 +455,52 @@ function yesClick(){
 }
 
 function next(n){
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+
+  const current = document.querySelector('.screen.active');
+  const nextScreen = document.getElementById('s' + n);
+
+  if(!nextScreen) return;
+
+  // STEP 1: fade out current (NO removal yet)
+  if(current){
+    current.style.opacity = "0";
+    current.style.transform = "scale(1.03)";
+  }
+
+  // STEP 2: after fade, switch screens
   setTimeout(() => {
-      document.getElementById('s'+n).classList.add('active');
+
+    document.querySelectorAll('.screen')
+      .forEach(s => s.classList.remove('active'));
+
+    nextScreen.classList.add('active');
+
+    // prepare entry animation
+    nextScreen.style.opacity = "0";
+    nextScreen.style.transform = "scale(1.02)";
+
+    requestAnimationFrame(() => {
+      nextScreen.style.opacity = "1";
+      nextScreen.style.transform = "scale(1)";
+    });
+
+    updateTimeline(n);
+
+    if(n !== 15){
+      stopHearts();
+    }
+
+    if(n === 15){
+      setTimeout(() => {
+        initAudioAnalysis();
+        initFinalScreen();
+        startHearts();
+      }, 300);
+    }
+
   }, 250);
-
-   updateTimeline(n);
-  
-  if(n !== 15){
-    stopHearts();
-  }
-
-  if(n === 15){
-    setTimeout(() => {
-      initAudioAnalysis();
-      initFinalScreen();
-      startHearts();
-    }, 300);
-  }
 }
+  
   
 const quotes = {
   1: `The way we met…
