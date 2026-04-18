@@ -85,6 +85,7 @@ textarea {
   <h2>When did we become friends? 😄</h2>
   <button onclick="next(3)">June 2023</button>
   <button onclick="wrong()">Yesterday 😜</button>
+  <button onclick="pastLife()">Some time in past life 😜</button>
 </div>
 
 <div class="screen fade" id="s3" style="background-image:url('Image1.jpeg')">
@@ -252,6 +253,12 @@ function startConfetti(){
       if(p.y>canvas.height) p.y=0;
     });
   },30);
+}
+function pastLife() {
+  alert("Oh no… both of us are feeling the same 😜❤️");
+  setTimeout(() => {
+    next(3);
+  }, 300);
 }
 </script>
 
