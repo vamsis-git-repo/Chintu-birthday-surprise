@@ -230,7 +230,7 @@ textarea {
 
 <body>
 
-<audio id="music" src="music.mp3" loop></audio>
+<audio id="music" loop></audio>
 <div id="timeline">
   <div class="dot active" id="t1">1</div>
   <div class="dot" id="t2">2</div>
@@ -253,6 +253,12 @@ textarea {
 <div class="screen active fade" id="s1" style="background-image:url('Image1.jpeg')">
   <h1 class="typewriter" id="titleText"></h1>
   <p>This is OUR story…</p>
+  <h3>Select a song 🎧</h3>
+  <select id="songSelect" onchange="changeSong()">
+    <option value="Song1.mpeg">Soft Love 💖</option>
+    <option value="Song2.mpeg">Romantic 🌹</option>
+    <option value="Song3.mpeg">Memories 🥺</option>
+  </select>
   <button onclick="start()">Start</button>
 </div>
 
@@ -383,6 +389,14 @@ function typeEffect(){
 }
 typeEffect();
 
+function changeSong(){
+  const music = document.getElementById("music");
+  const selected = document.getElementById("songSelect").value;
+
+  music.src = selected;
+  music.play();
+}
+  
 function initAudioAnalysis(){
   if(audioInitialized) return;
 
@@ -434,10 +448,12 @@ document.addEventListener("click", e=>{
 function start(){
   let music=document.getElementById("music");
 
+  music.src = document.getElementById("songSelect").value;
+
   music.volume=0;
 
   music.play().then(() => {
-    initAudioAnalysis(); // ⭐ must start AFTER play
+    initAudioAnalysis();
   });
 
   let vol=0;
